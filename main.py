@@ -1,3 +1,4 @@
+from datetime import datetime
 from itertools import chain
 import pandas as pd
 from selenium import webdriver
@@ -48,13 +49,20 @@ def create_dataframe(table):
     return df
 
 
-driver = setup()
-request(driver, URL)
-trs_ranking = driver.find_elements_by_xpath(teams_tb_xpath)
-trs_points = driver.find_elements_by_xpath(points_tb_xpath)
-ranking_and_team = [tr_to_rank(tr) for tr in trs_ranking]
-points = [tr_to_points(tr) for tr in trs_points]
-last_matches = [tr_to_last_matches(tr) for tr in trs_points]
-table = [list(chain(*i)) for i in zip(ranking_and_team, points)]
-df = create_dataframe(table)
-driver.quit()
+def main():
+    driver = setup()
+    request(driver, URL)
+    trs_ranking = driver.find_elements_by_xpath(teams_tb_xpath)
+    trs_points = driver.find_elements_by_xpath(points_tb_xpath)
+    ranking_and_team = [tr_to_rank(tr) for tr in trs_ranking]
+    points = [tr_to_points(tr) for tr in trs_points]
+    last_matches = [tr_to_last_matches(tr) for tr in trs_points]
+    table = [list(chain(*i)) for i in zip(ranking_and_team, points)]
+    df = create_dataframe(table)
+    driver.quit()
+    file_creation_date = datetime.now().strftime('%d-%m-%Y %H-%M')
+    df.to_excel(f'classificação {file_creation_date}.xlsx', index=False)
+
+
+if __name__ == "__main__":
+    main()
