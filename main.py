@@ -1,4 +1,5 @@
 from itertools import chain
+import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -40,6 +41,13 @@ def tr_to_last_matches(tr):
     return last_matches
 
 
+def create_dataframe(table):
+    df = pd.DataFrame(table)
+    df.columns = ['Classificação', 'Time', 'Pontos',
+                  'Histórico de jogos', 'Gols marcados']
+    return df
+
+
 driver = setup()
 request(driver, URL)
 trs_ranking = driver.find_elements_by_xpath(teams_tb_xpath)
@@ -48,3 +56,5 @@ ranking_and_team = [tr_to_rank(tr) for tr in trs_ranking]
 points = [tr_to_points(tr) for tr in trs_points]
 last_matches = [tr_to_last_matches(tr) for tr in trs_points]
 table = [list(chain(*i)) for i in zip(ranking_and_team, points)]
+df = create_dataframe(table)
+driver.quit()
