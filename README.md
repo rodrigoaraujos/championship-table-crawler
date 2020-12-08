@@ -1,4 +1,4 @@
-# Teste_RPA_G&P
+# Webcrawler with python
 
 Navigation, data collection and storage of information with Python
 
@@ -26,4 +26,4 @@ https://chromedriver.chromium.org/downloads
 ## Running the code  
 python main.py
 
-__note: to view the data collection execution just remove the comment from line 7 of the main.py file__
+__note: to view the data collection execution just comment the line 15 of the main.py file__
